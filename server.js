@@ -1,7 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const mysql = require('mysql');
-const app = express();
+const mysql = require('mysql2'); 
+const fs = require('fs');
+const path = require('path');
+const app = express()
 
 const corsOptions = {
    origin: true,
@@ -13,17 +15,18 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-// 2. 数据库连接池（解决重连+性能问题）
 const db = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '123456',
-  database: 'coffee_shop',
-  connectionLimit: 10, // 连接池大小
-  reconnect: true // 自动重连
+  host: 'mysql-16e7842f-newcastle-5563.a.aivencloud.com',
+  port: 19561,
+  user: 'avnadmin',
+  password: 'AVNS_L1pzylSOHZEIRLKThm2',
+  database: 'defaultdb',
+  ssl: {
+ca: fs.readFileSync(path.join(__dirname, 'ca.pem')),
+  rejectUnauthorized: false
+  }
 });
 
-// 测试连接
 db.getConnection((err, conn) => {
   if (err) {
     console.error('数据库连接失败:', err.message);
@@ -107,7 +110,7 @@ app.get('/api/orders', (req, res) => {
   });
 });
 
-// 6. 更新状态接口（添加错误详情）
+
 app.post('/api/update-status', (req, res) => {
    const { id, status, cancelReason } = req.body;
   if (!id || !status) {
@@ -129,7 +132,24 @@ app.post('/api/update-status', (req, res) => {
     res.json({ message: 'Status updated successfully' });
   });
 });
+//
+app.get('/create-tables', async (req, res) => {
+  try {
+    const db = await require('mysql2/promise').createConnection({
+      host: 'mysql-16e7842f-newcastle-5563.a.aivencloud.com',
+      port: 19561, user: 'avnadmin', password: 'AVNS_L1pzylSOHZEIRLKThm2',
+      database: 'defaultdb', ssl: { rejectUnauthorized: false }
+    });
 
+    await db.query(`CREATE TABLE IF NOT EXISTS menu (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(50),regular DECIMAL(5,2),large DECIMAL(5,2))`);
+    await db.query(`CREATE TABLE IF NOT EXISTS orders (id INT AUTO_INCREMENT PRIMARY KEY,items TEXT NOT NULL,pick_up_time DATETIME NOT NULL,status VARCHAR(20) NOT NULL DEFAULT 'Accepted',cancel_reason VARCHAR(50))`);
+    await db.query(`INSERT INTO menu (name, regular, large) VALUES ('Americano',1.5,2),('Latte',2.5,3),('Cappuccino',2.5,3),('Hot Chocolate',2,2.5),('Mocha',2.5,3)`);
+
+    await db.end();
+    res.send('✅ 云端表创建成功！现在可以正常下单！');
+  } catch (e) { res.send('❌ 错误：' + e.message); }
+});
+//
 app.listen(3001, () => {
   console.log('✅ 后端运行在 http://localhost:3001');
   console.log('✅ 支持其他设备访问！');
