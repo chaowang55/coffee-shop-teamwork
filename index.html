@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whistlestop Coffee Hut - Order Coffee</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+    
+        .status-box {
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+        .status-box.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-box.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Whistlestop Coffee Hut</h1>
+        <p>Cramlington Station | Mobile Ordering</p>
+    </header>
+
+    <main class="container">
+        <section class="menu-section">
+            <h2>☕ Coffee Menu</h2>
+            <div id="menu-list" class="menu-grid"></div>
+        </section>
+
+        <section class="order-section">
+            <h2>Your Order</h2>
+            <div id="cart-items"></div>
+            
+            <div class="form-group">
+                <label>Pick-up Time (within opening hours: now - 20:00)</label>
+                <input type="datetime-local" id="pickup-time" required>
+            </div>
+            <button id="submit-order" class="btn-primary">Place Order</button>
+        
+            <div id="order-status" class="status-box"></div>
+        </section>
+
+        <section class="order-section" style="margin-top: 2rem;">
+            <h2>Check Order Status</h2>
+            <div class="form-group">
+                <label>Enter your Order ID:</label>
+                <input type="text" id="order-id-input" placeholder="e.g. 1772538538218">
+                <button onclick="checkOrderStatus()" class="btn-primary">Check Status</button>
+            </div>
+            <div id="status-result" class="status-box"></div>
+        </section>
+    </main>
+
+    <script src="./customersapp.js"></script>
+   
+    <footer style="text-align: center; padding: 1rem; margin-top: 2rem;">
+        <a href="staff.html" style="color: #6f4e37; font-weight: 600;">Staff Dashboard</a>
+    </footer>
+</body>
+</html>
