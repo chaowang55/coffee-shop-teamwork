@@ -1,0 +1,249 @@
+
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: #fdf6f0; 
+    padding: 0 10px;
+}
+
+.header {
+    background-image: url("https://picsum.photos/id/145/1200/300");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(255, 255, 255, 0.6);
+    background-blend-mode: overlay;
+    color: #000 !important;
+    text-align: center;
+    padding: 3rem 1rem;
+    margin: 15px auto 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-width: 1200px;
+}
+
+
+.header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #000 !important;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    font-size: 1.1rem;
+    color: #222 !important; 
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.menu-item {
+    background: #d6ae93; 
+    border: 1px solid #be9a7300; 
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 6px rgba(111, 78, 55, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.menu-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(111, 78, 55, 0.12);
+}
+
+.menu-item h3 {
+    color: #6f4e37;
+    font-size: 1.25rem;
+    margin-bottom: 0.8rem;
+}
+
+.menu-item .price-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.4rem 0;
+    color: #555;
+}
+
+.menu-item .price-label {
+    font-weight: 500;
+}
+
+.menu-item .price-value {
+    font-weight: 600;
+    color: #6f4e37;
+}
+
+/* 按钮样式 */
+.btn-primary {
+    background: #6f4e37;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* 订单区域 */
+.order-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+#cart-items {
+    padding: 10px;
+    background: #f8f5f2;
+    border-radius: 6px;
+    margin: 15px 0;
+    min-height: 60px;
+}
+
+.form-group {
+    margin: 15px 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* 状态提示 */
+.status-box {
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 15px;
+    display: none;
+    font-weight: 600;
+}
+
+.status-box.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+/* ========================================== */
+/* ========== STAFF 员工界面专用样式 ========== */
+/* ==========      STAFF View    ========== */
+/* ========================================== */
+
+.orders-section,
+.archive-section {
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.orders-section h2,
+.archive-section h2 {
+  color: #6f4e37;
+  margin-bottom: 1.2rem;
+  font-size: 1.6rem;
+}
+
+.orders-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+.order-card {
+  background: #fff9f5;
+  border: 1px solid #d2b49d;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.order-card h4 {
+  color: #6f4e37;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.order-card p {
+  color: #444;
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+/* 订单状态标签 */
+//upload  order statement
+.status {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.8rem;
+  margin: 0.5rem 0;
+}
+
+.status-accepted { background: #4CAF50; }
+.status-inprogress { background: #2196F3; }
+.status-ready { background: #FF9800; }
+.status-collected { background: #757575; }
+.status-cancelled { background: #f44336; }
+.status-completed { background: #4CAF50; } 
+
+
+.btn-small {
+  background: #6f4e37;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  margin: 0.3rem 0.2rem 0 0;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+
+.btn-complete {
+  background: #4CAF50 !important;
+  color: white !important;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 0.2rem;
+}
+
+.btn-cancel {
+  background: #f44336 !important;
+  color: white !important;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 0.2rem;
+}
