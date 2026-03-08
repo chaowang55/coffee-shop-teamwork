@@ -38,11 +38,9 @@ cd coffee-shop-teamwork
 
 npm install
 
-4. 启动服务
+4. 启动后端服务
 
 node server.js
-
-5. 访问系统：打开浏览器访问 http://localhost:3001
 
 
 
@@ -100,11 +98,11 @@ cd coffee-shop-teamwork
 
 npm install
 
-4. Start the server
+4. Start the backend server
 
 node server.js
 
-5. Access the system: Open your browser and go to http://localhost:3001
+
 
 
 
