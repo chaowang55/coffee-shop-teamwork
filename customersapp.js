@@ -1,3 +1,5 @@
+
+// Store opening hours (0=Sunday, 1=Monday...6=Saturday) | null = closed
 const OPENING_HOURS = {
   0: { open: null, close: null }, 
   1: { open: "06:30", close: "19:00" }, 
@@ -7,6 +9,7 @@ const OPENING_HOURS = {
   5: { open: "06:30", close: "19:00" }, 
   6: { open: "07:00", close: "18:00" } 
 };
+// Core menu data: coffee items with regular/large pricing
 const coffeeMenu = [
   { name: "Americano", regular: 1.50, large: 2.00 },
   { name: "Americano with milk", regular: 2.00, large: 2.50 },
@@ -15,17 +18,16 @@ const coffeeMenu = [
   { name: "Hot Chocolate", regular: 2.00, large: 2.50 },
   { name: "Mocha", regular: 2.50, large: 3.00 }
 ];
-
-
 let cart = [];
 
-
+// Run once DOM is fully loaded: render menu + attach order submission listener
 document.addEventListener('DOMContentLoaded', function() {
   renderMenu();
   document.getElementById('submit-order').addEventListener('click', submitOrder);
 });
 
-// 
+/* Dynamically generate and display the coffee menu to the page，
+ Creates UI cards for each menu item with price and "Add to Cart" buttons*/
 function renderMenu() {
   const menuList = document.getElementById('menu-list');
   menuList.innerHTML = '';
@@ -51,14 +53,14 @@ function renderMenu() {
     menuList.appendChild(menuCard);
   });
 }
-
+// Add selected menu item (with size) to cart, then re-render cart UI
 function addToCart(index, size) {
   const item = { ...coffeeMenu[index], size: size, price: coffeeMenu[index][size] };
   cart.push(item);
   renderCart();
 }
 
-
+// Render cart contents to UI (shows empty state if no items, else list of selected items)
 function renderCart() {
   const cartEl = document.getElementById('cart-items');
   if (cart.length === 0) {
@@ -76,13 +78,13 @@ function renderCart() {
   `).join("");
 }
 
-
+/*Handle order submission: validate input → send to backend API → update UI
+Validates pickup time (within opening hours) and non-empty cart before submission*/
 function submitOrder() {
   const pickupTime = document.getElementById('pickup-time').value;
   const orderStatusEl = document.getElementById('order-status');
   const submitBtn = document.getElementById('submit-order');
 
-  
   if (!pickupTime || cart.length === 0) {
     alert("Please select items and a valid pick-up time!");
     return;
@@ -117,8 +119,6 @@ function submitOrder() {
     orderStatusEl.className = "status-box success";
     orderStatusEl.innerText = `Order #${data.orderId} submitted successfully!`;
     alert(data.message);
-
-  
     cart = [];
     renderCart();
   })
@@ -128,12 +128,12 @@ function submitOrder() {
     console.error(err);
   })
   .finally(() => {
-    // 恢复按钮状态
     submitBtn.disabled = false;
     submitBtn.textContent = "Place Order";
   });
 }
 
+// Updates UI with status (found/success, not found/error)
 function checkOrderStatus() {
   const orderId = document.getElementById('order-id-input').value.trim();
   const statusResultEl = document.getElementById('status-result');
@@ -142,8 +142,6 @@ function checkOrderStatus() {
     alert("Please enter an Order ID!");
     return;
   }
-
-  // 加载状态
   statusResultEl.style.display = "block";
   statusResultEl.className = "status-box";
   statusResultEl.innerText = "Checking status...";
@@ -169,7 +167,8 @@ function checkOrderStatus() {
     console.error(err);
   });
 }
-
+// Validate if selected pickup time is within the shop's opening hours
+// Checks day of week (closed Sundays) and time range for the selected day
 function isPickupTimeValid(pickupTimeStr) {
   const pickupTime = new Date(pickupTimeStr);
   const dayOfWeek = pickupTime.getDay(); 
@@ -180,18 +179,13 @@ function isPickupTimeValid(pickupTimeStr) {
     alert("Sorry! We are closed on Sundays.");
     return false;
   }
-
-
   const [openHour, openMin] = hoursConfig.open.split(":").map(Number);
   const [closeHour, closeMin] = hoursConfig.close.split(":").map(Number);
   const openTotalMin = openHour * 60 + openMin;
   const closeTotalMin = closeHour * 60 + closeMin;
-
- 
   const pickupHour = pickupTime.getHours();
   const pickupMin = pickupTime.getMinutes();
   const pickupTotalMin = pickupHour * 60 + pickupMin;
-
   if (pickupTotalMin < openTotalMin || pickupTotalMin > closeTotalMin) {
     alert(`Sorry! We are only open ${hoursConfig.open}-${hoursConfig.close} on ${getDayName(dayOfWeek)}.`);
     return false;
@@ -199,8 +193,6 @@ function isPickupTimeValid(pickupTimeStr) {
 
   return true;
 }
-
-
 function getDayName(dayOfWeek) {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   return days[dayOfWeek];

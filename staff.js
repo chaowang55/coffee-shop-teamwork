@@ -12,7 +12,7 @@ window.onload = loadOrders;
 function loadOrders() {
     fetchWithTimeout('http://localhost:3001/api/orders')
     .then(res => {
-        if (!res.ok) throw new Error('请求失败');
+        if (!res.ok) throw new Error('request fail');
         return res.json();
     })
     .then(allOrders => {
@@ -40,7 +40,6 @@ function renderOrders(orders, elementId) {
     const el = document.getElementById(elementId);
     if (orders.length === 0) {
         el.innerHTML = "<p style='text-align: center; color: #666; padding: 2rem;'>No orders to display.</p>";
-        // 错误1：删除这里的isArchived定义（订单为空时没有order对象，定义无意义）
         return;
     }
     
@@ -84,14 +83,14 @@ function updateStatus(orderId, newStatus) {
         body: JSON.stringify({ id: orderId, status: newStatus }),
     })
     .then(res => {
-        if (!res.ok) throw new Error('更新订单状态失败');
+        if (!res.ok) throw new Error('update order, statement is failure');
         return res.json();
     })
     .then(updatedOrder => {
       loadOrders();
     })
     .catch(err => {
-        alert('更新订单状态失败：' + err.message);
+        alert('update order, statement is failure：' + err.message);
         console.error(err);
     });
 }

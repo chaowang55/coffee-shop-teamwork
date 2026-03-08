@@ -1,5 +1,10 @@
 
-{
+/* ========================================== */
+/* ========== 用户界面样式 ========== */
+/* ==========    Customer View    ========== */
+/* ========================================== */
+
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -10,7 +15,6 @@ body {
     background: #fdf6f0; 
     padding: 0 10px;
 }
-
 .header {
     background-image: url("https://picsum.photos/id/145/1200/300");
     background-size: cover;
@@ -26,33 +30,26 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     max-width: 1200px;
 }
-
-
 .header h1 {
     font-size: 2.2rem;
     font-weight: 800;
     color: #000 !important;
     margin-bottom: 0.5rem;
 }
-
 .header p {
     font-size: 1.1rem;
     color: #222 !important; 
 }
-
 .container {
     max-width: 800px;
     margin: 0 auto;
 }
-
-
 .menu-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
     margin: 2rem 0;
 }
-
 .menu-item {
     background: #d6ae93; 
     border: 1px solid #be9a7300; 
@@ -61,7 +58,6 @@ body {
     box-shadow: 0 2px 6px rgba(111, 78, 55, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .menu-item:hover {
     transform: translateY(-4px);
     box-shadow: 0 4px 12px rgba(111, 78, 55, 0.12);
@@ -88,8 +84,6 @@ body {
     font-weight: 600;
     color: #6f4e37;
 }
-
-/* 按钮样式 */
 .btn-primary {
     background: #6f4e37;
     color: white;
@@ -102,8 +96,6 @@ body {
     cursor: pointer;
     margin-top: 10px;
 }
-
-/* 订单区域 */
 .order-section {
     background: white;
     padding: 20px;
@@ -196,9 +188,6 @@ input[type="datetime-local"] {
   margin: 0.3rem 0;
   font-size: 0.9rem;
 }
-
-/* 订单状态标签 */
-//upload  order statement
 .status {
   display: inline-block;
   padding: 0.3rem 0.6rem;

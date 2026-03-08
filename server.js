@@ -27,80 +27,73 @@ ca: fs.readFileSync(path.join(__dirname, 'ca.pem')),
   }
 });
 
+//connent to database system
 db.getConnection((err, conn) => {
   if (err) {
-    console.error('数据库连接失败:', err.message);
-    // 重连逻辑
+    console.error('Can not connent database:', err.message);
     setTimeout(() => db.getConnection((err, conn) => {
-      if (err) console.error('重连失败:', err);
-      else console.log('✅ 数据库重连成功！');
+      if (err) console.error('reconnent fail:', err);
+      else console.log('Connent successfully！');
       conn.release();
     }), 3000);
     return;
   }
-  console.log('✅ MySQL 连接成功！');
+  console.log('Connent successfully！');
   conn.release();
 });
 
-// 3. 获取菜单接口（添加错误详情）
+// get menu api 
 app.get('/api/menu', (req, res) => {
   db.query('SELECT * FROM menu', (err, results) => {
     if (err) {
-      console.error('获取菜单错误:', err); // 打印具体错误
+      console.error('Can not get menu:', err); 
       return res.status(500).json({ 
-        error: '获取菜单失败', 
-        detail: err.message // 返回错误详情（生产环境可隐藏）
+        error: 'Can not get menu', 
+        detail: err.message 
       });
     }
     res.json(results);
   });
 });
 
-// 4. 下单接口（自动生成ID，避免冲突）
+// 下单接口
+// order api, create id number avoid the same number 
 app.post('/api/order', (req, res) => {
   const orderData = req.body;
-  console.log("📥 收到前端订单数据：", JSON.stringify(orderData)); // 打印前端传的原始数据
-
-  // 关键修复：转换时间格式（前端T分隔 → MySQL空格分隔）
+  console.log(" reieve format data：", JSON.stringify(orderData)); 
   const mysqlTime = orderData.pick_up_time.replace('T', ' ') + ':00';
-  console.log("⏰ 转换后的MySQL时间：", mysqlTime); // 打印转换后的时间
-
-  // 去掉手动ID，改用数据库自增（需确保orders表id是自增主键）
+  console.log(" the time data ：", mysqlTime); 
   const sql = `INSERT INTO orders (items, pick_up_time, status) VALUES (?, ?, ?)`;
   const sqlParams = [JSON.stringify(orderData.items), mysqlTime, orderData.status];
-  console.log("🔧 执行SQL：", sql, "参数：", sqlParams); // 打印要执行的SQL和参数
-
+  console.log(" 执行SQL：", sql, "参数：", sqlParams);
   db.query(sql, sqlParams, (err, result) => {
     if (err) {
-      console.error('❌ 下单SQL执行失败：', err); // 打印完整错误（重点！）
+      console.error(' Order placement failed：', err); 
       return res.status(500).json({ 
-        error: '下单失败', 
-        detail: err.message, // 返回具体错误给前端
+        error: 'Order placement failed', 
+        detail: err.message, 
         sql: sql,
         params: sqlParams
       });
     }
-    // 返回自增的订单ID
     res.json({ 
-      message: '✅ 订单提交成功！',
+      message: 'Order placement successfully！',
       orderId: result.insertId 
     });
   });
 });
-
-// 5. 获取订单接口（添加错误详情）
 app.get('/api/orders', (req, res) => {
   db.query('SELECT * FROM orders ORDER BY id DESC', (err, results) => {
     if (err) {
-      console.error('获取订单错误:', err);
+      console.error('Get wrong menu data:', err);
       return res.status(500).json({ 
-        error: '获取订单失败', 
+        error: 'Get wrong menu data', 
         detail: err.message 
       });
     }
     const orders = results.map(order => {
       try {
-        order.items = JSON.parse(order.items); // 容错JSON解析
+        order.items = JSON.parse(order.items); 
       } catch (e) {
         order.items = [];
       }
@@ -146,11 +139,11 @@ app.get('/create-tables', async (req, res) => {
     await db.query(`INSERT INTO menu (name, regular, large) VALUES ('Americano',1.5,2),('Latte',2.5,3),('Cappuccino',2.5,3),('Hot Chocolate',2,2.5),('Mocha',2.5,3)`);
 
     await db.end();
-    res.send('✅ 云端表创建成功！现在可以正常下单！');
-  } catch (e) { res.send('❌ 错误：' + e.message); }
+    res.send('Cloud table created successfully! You can now place orders normally！');
+  } catch (e) { res.send('wrong：' + e.message); }
 });
 //
 app.listen(3001, () => {
-  console.log('✅ 后端运行在 http://localhost:3001');
-  console.log('✅ 支持其他设备访问！');
+  console.log(' 后端运行在 http://localhost:3001');
+  console.log(' 支持其他设备访问！');
 });
